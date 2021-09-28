@@ -10,6 +10,7 @@ import './styles/style.scss' // custom styles
 import './styles/calendar.css' // custom styles
 import './styles/ReactToastify.css' // notifications styles
 import './fonts/font-gotham.css' // fonts
+import { Switch, Route } from 'react-router-dom'
 
 const history = createBrowserHistory()
 const store = configureStore(history)
@@ -19,7 +20,10 @@ const store = configureStore(history)
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App/>
+      <Switch>
+        <Route path="/guidelines" render={() => <h1>Guidelines</h1>} />
+        <Route component={App} />
+      </Switch>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
