@@ -1,0 +1,16 @@
+.layout-center-wrapper{
+  min-height: 100vh;
+}
+
+.layout-center {
+  text-align: center;
+  min-width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.layout-center-horizontal {
+  margin: 0 auto;
+}

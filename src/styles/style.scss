@@ -1,0 +1,268 @@
+@import 'bidsmart.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ECF0F5;
+  font-family: $regular;
+}
+
+input {
+  border-radius: 7px !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.w-100{
+  width: 100%;
+
+  //@media only screen and (max-width : 992px) {
+  //  width: 100%;
+  //}
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.rounded {
+  border-radius: $radius !important;
+}
+
+.select-rounded {
+  border-radius: 7px !important;
+}
+
+.shadow {
+  //box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.transform-scale {
+  cursor: pointer;
+  transition: all 0.1s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.overflow{
+  &-x{
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  &-y {
+    overflow-y: auto;
+  }
+  &-hidden{
+    overflow: hidden;
+  }
+}
+
+.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.no-events {
+  pointer-events: none;
+}
+
+.wrapper {
+  padding: 0 25px;
+  position: relative;
+  height: 100vh;
+}
+
+.header {
+   &-logo {
+     position: relative;
+     cursor: pointer;
+     color: $black;
+     &:hover{
+       color: $black;
+     }
+     @media only screen and (max-width : 992px) {
+       position: absolute;
+       left: 50%;
+       transform: translateX(-50%);
+     }
+   }
+}
+
+.header .header-menu-button {
+  display: none;
+  margin-right: 20px;
+  @media only screen and (max-width : 992px) {
+    display: block;
+  }
+}
+
+.main-container {
+  padding-left: 300px;
+  padding-bottom: 20px;
+  position: relative;
+
+  @media only screen and (max-width : 992px) {
+    padding-left: 0;
+  }
+}
+
+.aside {
+  width: 260px;
+  //background: #fff;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  //border: 10px solid;
+
+  @media only screen and (max-width : 992px) {
+    display: none;
+  }
+}
+
+.container--max-width {
+  max-width: 1200px;
+
+  @media only screen and (max-width : 1400px) {
+    max-width: 1000px;
+  }
+}
+
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu__info {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 30px;
+  cursor: pointer;
+  min-height: 30px;
+  @media only screen and (max-width : 768px) {
+    border: none;
+    & .user.circle {
+      font-size: 25px !important;
+    }
+    & .angle.down {
+      display: none;
+    }
+  }
+}
+
+.user-menu__name {
+  display: block;
+  @media only screen and (max-width : 768px) {
+    display: none;
+  }
+}
+
+.user-menu__dropdown {
+  min-width: 200px;
+  position: absolute;
+  z-index: 10;
+  top: 50px;
+  right: 0;
+}
+
+.main-menu {
+  width: 100%;
+  position: relative;
+  background: #fff;
+  border-radius: $radius;
+  overflow: hidden;
+  //@media only screen and (max-width : 576px) {
+  //  width: 300px;
+  //}
+  &_grey{
+    background: #F2F2F2;
+  }
+  &-item {
+    //background: #fff;
+    position: relative;
+    font-family: $regular;
+    padding: 15px 15px;
+    border-radius: $radius;
+    cursor: pointer;
+    transition: all .3s;
+    &__title {
+      display: inline-block;
+      @media only screen and (max-width : 576px) {
+        //display: none;
+      }
+    }
+    &__active {
+      background-color: #fff;
+      font-family: $bold;
+    }
+    &__toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      //padding: 15px;
+      //transition: all 0.3s;
+      //border-radius: 0 $radius $radius 0;
+      //&:hover {
+      //  background: rgba(0, 0, 0, 0.02);
+      //}
+    }
+  }
+}
+
+.submenu {
+  //border: 1px solid;
+  margin-top: 15px;
+  &-item {
+    padding: 10px 5px 10px 5px;
+    border-top: 1px solid rgba(0,0,0,.05);
+    font-family: $regular;
+    &:last-child {
+      //border-radius: 0 0 $radius $radius;
+    }
+    &__active {
+      border-right: 5px solid;
+      font-family: $bold;
+    }
+  }
+  &_white > .submenu-item {
+    background: #fff;
+  }
+}
+
+.menu-mobile-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+  max-width: 400px;
+  min-width: 300px;
+  padding: 40px;
+}
+
+.pagination-mobile {
+  @media only screen and (max-width : 576px) {
+    font-size: 11px !important;
+  }
+}
+
