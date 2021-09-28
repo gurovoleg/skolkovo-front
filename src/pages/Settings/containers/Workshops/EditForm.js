@@ -8,7 +8,6 @@ import { quizzesSelector } from 'Selectors/quiz'
 import * as Yup from "yup"
 import { actions } from 'Reducers/settings'
 import { workshopStatuses as statuses } from "Root/settings"
-import { Icon } from "semantic-ui-react"
 
 const setStatusOptions = data => Object.keys(data).map(key => ({ value: data[key].value, label: data[key].label }))
 const setQuizOptions = data => data.map(item => ({ value: item.id, label: item.title }))
@@ -49,7 +48,6 @@ const EditForm = ({ initialValues, quizzes, history, submit, remove }) => {
             </div>
             <div className="col-md-3">
               <ValueWithLabel label="Участники" value={values.usersTotal} />
-              <Icon name="file excel" color="green"/>
             </div>
           </div>
 

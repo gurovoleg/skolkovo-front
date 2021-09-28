@@ -3,10 +3,6 @@ import { Link } from "react-router-dom"
 import { ListItem } from "./index"
 import { Column as ListColumn } from 'Components'
 import { Wrap } from "Components/ui"
-import { Icon } from "semantic-ui-react"
-import { useDispatch, useSelector } from "react-redux"
-import { actions } from 'Reducers/user'
-import { workshopsSelector } from 'Selectors/workshop'
 
 const columns = [
   {
@@ -38,25 +34,11 @@ const columns = [
 
 const List = ({ users, isOpened, idList, urlBag, onItemChange }) => {
 
-  const dispatch = useDispatch()
-  const { id } = useSelector(workshopsSelector).find(w => w.status === 'active') || { id: '' }
-
   return (
     <Wrap>
 
       {/* Кнопки добавить пользователя и получить Excel список пользователей */}
-      <div className="row align-items-center justify-content-between mar-btm_md">
-        <div className="col-sm-6 mar-btm_md">
-          <Link to="/users/add" className="button button_sm text_md button_green d-block d-sm-inline-block">+ Добавить</Link>
-        </div>
-
-        <div className="col-sm-6 text-sm-right mar-btm_md">
-          <div className="button button_white button_sm text_md button_grey-border d-block d-sm-inline-block" onClick={() => dispatch(actions.loadExcel(id))}>
-            <Icon name="file excel" color="green"/>
-            Сохранить в Excel
-          </div>
-        </div>
-      </div>
+      <Link to="/users/add" className="button button_sm text_md button_green d-block d-sm-inline-block mar-btm_lg">+ Добавить</Link>
 
       {/* Колонки */}
       <div className="row wrap-inner_wide d-none d-md-flex pad-btm_sm">

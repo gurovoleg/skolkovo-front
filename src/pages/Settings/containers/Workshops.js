@@ -8,6 +8,7 @@ import { workshopStatuses as statuses } from "Root/settings"
 import { Icon } from "semantic-ui-react"
 import { Link, Switch, Route } from 'react-router-dom'
 import { WorkshopEdit } from "./Workshops/index"
+import { actions as userActions } from 'Reducers/user'
 
 const columns = (props) => [
   {
@@ -46,12 +47,12 @@ const columns = (props) => [
   }
 ]
 
-const Workshops = ({ remove, complete, setActive, ...rest }) => {
+const Workshops = ({ remove, complete, setActive, loadExcel, ...rest }) => {
   return (
     <Switch>
       <Route path="/settings/workshop/:workshopId([0-9]+)/edit" render={() => <WorkshopEdit remove={remove} />} />
       <Route path="/settings/workshop" render={() => {
-        return <Table columns={columns({ remove, complete, setActive }) } {...rest} />
+        return <Table columns={columns({ remove, complete, setActive, loadExcel }) } {...rest} />
       }} />
     </Switch>)
 }
@@ -66,6 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
   remove: (id, redirectBack) => dispatch({ ...actions.remove('workshop', id), redirectBack }),
   complete: (item) => dispatch(actions.changeStatus({ ...item, status: statuses.completed.value })),
   setActive: (item) => dispatch(actions.changeStatus({ ...item, status: statuses.active.value })),
+  loadExcel: (id) => dispatch(userActions.loadExcel(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workshops)

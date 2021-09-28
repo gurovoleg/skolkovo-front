@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from "semantic-ui-react"
 
-const ActionsGroup = ({ item, update, remove, complete }) => {
+const ActionsGroup = ({ item, update, remove, complete, loadExcel }) => {
   return (
     <React.Fragment>
       {update && <Icon title="Редактировать" name="edit" color='blue' className="transform-scale" onClick={() => update(item.id)}/>}
@@ -14,6 +14,7 @@ const ActionsGroup = ({ item, update, remove, complete }) => {
         name="flag checkered"
         className="transform-scale"
         onClick={() => complete(item)}/>}
+      {loadExcel && <Icon title="Список участников" name="file excel" color="green" className="transform-scale" onClick={() => loadExcel(item.id)}/>}
     </React.Fragment>
   )
 }
