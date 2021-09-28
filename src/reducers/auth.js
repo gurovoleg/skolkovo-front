@@ -12,11 +12,11 @@ export const types = {
 }
 
 const initialState = (reset = false) => {
-  const roleId = storage.get('roleId')
+  const role = storage.get('role')
   const token = storage.get('token')
   return {
     token: !reset && token,
-    roleId: !reset && roleId,
+    role: !reset && role,
     id: null
   }
 }
@@ -27,13 +27,13 @@ const auth = (state = initialState(), action) => {
       return {
         ...state,
         id: action.profile.id,
-        roleId: action.profile.roleId,
+        role: action.profile.role,
       }
     case types.LOGIN_SUCCESS:
       return {
         ...state,
         token: action.payload.token,
-        roleId: action.payload.roleId,
+        role: action.payload.role,
       }
     case types.LOGIN_FAILURE:
     case types.LOGIN_REQUEST:

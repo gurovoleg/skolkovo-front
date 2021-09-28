@@ -16,6 +16,12 @@ export const config = {
   }
 }
 
+export const roles = {
+  ADMIN: 'Администратор',
+  USER: 'Участник',
+  MODERATOR: 'Модератор'
+}
+
 export const statuses = {
   active: {
     value: 'active',

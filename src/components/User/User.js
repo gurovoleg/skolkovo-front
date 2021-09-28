@@ -2,16 +2,11 @@ import React from 'react'
 import { Icon, Statistic, Label } from "semantic-ui-react"
 import { Link } from 'react-router-dom'
 import { Wrap, PluralValue, Value, DateValue } from 'Components/ui'
-import { statuses } from 'Root/settings'
-import { rolesSelector } from "Selectors"
-import { useSelector } from "react-redux"
+import { statuses, roles } from 'Root/settings'
 
 const User = ({ user, match, deleteUser, profile }) => {
-  const roles = useSelector(rolesSelector)
-  const admin = roles.find(role => role.name === 'admin')
-
   // пользователь должен быть админом и не должен удалять самого себя
-  const canDelete = profile.roleId === (admin && admin.id) && (user.id !== profile.id)
+  const canDelete = (profile.role === roles.admin) && (user.id !== profile.id)
 
   if (!user) return null
 

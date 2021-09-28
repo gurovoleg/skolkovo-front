@@ -5,7 +5,7 @@ import { actions } from 'Reducers/statistics'
 import { withRouter, Link } from 'react-router-dom'
 import classNames from "classnames"
 
-const Events = ({ workshop, calculateEvent, eventsData, match }) => {
+const Events = ({ workshop, calculateEvent, eventsData, match, canUpdate }) => {
 
   const events = Array(Number(workshop.eventsTotal)).fill('').map((e, idx) => idx + 1)
 
@@ -41,11 +41,11 @@ const Events = ({ workshop, calculateEvent, eventsData, match }) => {
 
                   {event &&
                   <div>
-                    <Link to={`/statistics/${workshop.id}/reports/events/${eventName}`} className="button button_green button_sm text_xs mar-right_sm">Рейтинг</Link>
-                    <button className="button button_purple button_sm text_xs" onClick={() => calculateEvent(workshop.id, eventName)}>Пересчет</button>
+                    <Link to={`/statistics/${workshop.id}/reports/events/${eventName}`} className="button button_green button_sm text_xs">Рейтинг</Link>
+                    {canUpdate && <button className="button button_purple button_sm text_xs  mar-left_sm" onClick={() => calculateEvent(workshop.id, eventName)}>Пересчет</button>}
                   </div>}
 
-                  {!event && <button className="button button_sm text_xs" onClick={() => calculateEvent(workshop.id, eventName)}>Подсчитать</button>}
+                  {!event && canUpdate && <button className="button button_sm text_xs" onClick={() => calculateEvent(workshop.id, eventName)}>Подсчитать</button>}
 
                 </div>
               </div>

@@ -42,9 +42,8 @@ function* userUpdateWatcher(action) {
   try {
     console.log('%c userUpdateWatcher ', 'background:blue;color:#fff', action)
     const result = yield call(api.POST, '/user/update', action.payload)
-    // yield call(remoteGet, `/user/${action.payload.id}/profile`, 'user')
-    yield call(remoteGet, `/workshop/list`, 'workshop')
     yield put(goBack())
+    yield call(remoteGet, `/workshop/list`, 'workshop')
   } catch (error) {
     yield put({ type: 'USER_UPDATE_ERROR', error })
     action.formBag.setSubmitting(false)

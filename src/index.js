@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Route, Switch } from 'react-router-dom'
 import App from "./app"
 import { ConnectedRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
@@ -12,7 +11,6 @@ import './styles/calendar.css' // custom styles
 import './styles/ReactToastify.css' // notifications styles
 import './fonts/font-gotham.css' // fonts
 
-
 const history = createBrowserHistory()
 const store = configureStore(history)
 
@@ -21,10 +19,7 @@ const store = configureStore(history)
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Switch>
-        <Route path="/guidelines" render={() => <h1>Guidelines</h1>} />
-        <Route component={App} />
-      </Switch>
+      <App/>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

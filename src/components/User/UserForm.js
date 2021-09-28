@@ -10,9 +10,6 @@ import { rolesSelector, unitsSelector, streamsSelector } from "Selectors"
 import { workshopsSelector } from "Selectors/workshop"
 
 const UserForm = ({ submit, history, initialValues, schema, type, roles, workshops, streams, units }) => {
-
-  console.log('89898898989898', units)
-
   return (
     // <Formik initialValues={initialValues} onSubmit={(values, formBag) => {
     <Formik initialValues={initialValues} validationSchema={schema} onSubmit={(values, formBag) => {

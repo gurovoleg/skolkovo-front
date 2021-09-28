@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { withRemoteData, MenuNavItem, TabNavLink } from 'Components'
 import { Wrap, DateValue, ValueWithLabel } from 'Components/ui'
 import { Redirect, Route, Switch, withRouter } from "react-router-dom"
@@ -8,9 +8,14 @@ import { Page404 } from 'Pages'
 import { workshopSelector } from 'Selectors/workshop'
 import { statisticsWorkshopSelector } from 'Selectors/statistics'
 import { actions } from 'Reducers/statistics'
+import { profileSelector } from "Selectors/user"
+import { roles } from 'Root/settings'
 
 const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
   const progress = Math.floor(eventsData.length * 100 / workshop.eventsTotal)
+
+  const profile = useSelector(profileSelector)
+  const canUpdate = profile.role === roles.ADMIN
 
   return (
     <React.Fragment>
@@ -44,14 +49,15 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
           <div className="loader-line-fill loader-line-fill_round loader-line-fill_green" style={{ width: `${progress}%` }}></div>
         </div>
 
+        {canUpdate &&
         <div className="text_alignRight">
           <button className="button button_md button_purple button_purple-shadow mar-top_lg" onClick={() => calculateAllEvents(workshop.id)}>Подсчитать итоги по всем событиям</button>
-        </div>
+        </div>}
 
       </Wrap>
 
       <Switch>
-        <Route exact path={`${match.path}/events`} render={() => <Events workshop={workshop} eventsData={eventsData} />}/>
+        <Route exact path={`${match.path}/events`} render={() => <Events canUpdate={canUpdate} workshop={workshop} eventsData={eventsData} />}/>
         <Route path={`${match.path}/reports`} render={() => <Reports workshop={workshop} eventsData={eventsData} />}/>
         <Route exact path={match.path} render={() => <Redirect from={match.url} to={`${match.url}/events`}/>}/>
         <Route component={Page404}/>

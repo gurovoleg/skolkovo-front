@@ -5,7 +5,7 @@ import { Icon, Transition } from "semantic-ui-react"
 import { withRouter } from 'react-router-dom'
 import { filterSearchString } from 'Utils/searchString'
 
-const MenuItem = ({ icon, active, label, link, className, subItems, location }) => {
+const MenuItem = ({ icon, active, label, link, className, subItems, location, enabled }) => {
 
   // для определения активного элемента подменю удаляем стандартные параметры адресной строки (page, perPage, sort),
   // чтобы производить сверку без них, так как они могут отсутстовать/присутствовать
@@ -18,7 +18,7 @@ const MenuItem = ({ icon, active, label, link, className, subItems, location }) 
   return (
     <div className={classNames('main-menu-item', { 'main-menu-item__active': active }, className)}>
 
-      <Link to={link} className="link d-block">
+      <Link to={link} className={classNames('link d-block', { disabled: enabled === false })}>
         {icon && <Icon name={icon} className="mar-right_sm text_sm"/>}
         <span className="main-menu-item__title">{label}</span>
 

@@ -1,15 +1,14 @@
 import React, { Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Auth, Main, Logout } from 'Pages'
+import { Auth, Logout, Admin, Student } from 'Pages'
 import { ToastContainer } from 'react-toastify'
 import 'Root/styles/ReactToastify.css'
 import LoadingBar, { hideLoading } from 'react-redux-loading-bar'
 import { Route, Switch } from 'react-router-dom'
-import { config } from 'Root/settings.js'
+import { config, roles } from 'Root/settings.js'
 import Modal from 'Components/Modal'
 
-const App = ({ roleId, isLoading, hideLoading }) => {
-
+const App = ({ role, isLoading, hideLoading }) => {
   // убираем индикатор прогресса после загрузки страницы
   useEffect(() => isLoading ? hideLoading() : undefined)
 
@@ -25,7 +24,16 @@ const App = ({ roleId, isLoading, hideLoading }) => {
       <Switch>
         <Route path="/logout" component={Logout}/>
         <Route>
-          {roleId ? <Main /> : <Auth/>}
+          {((role) => {
+            switch (true) {
+              case role === (roles.ADMIN || roles.MODERATOR):
+                return <Admin />
+              case role === roles.USER:
+                return <Student />
+              default:
+                return <Auth />
+            }
+          })(role)}
         </Route>
       </Switch>
 
@@ -34,7 +42,7 @@ const App = ({ roleId, isLoading, hideLoading }) => {
 }
 
 const mapStateToProps = state => ({
-  roleId: state.auth.roleId,
+  role: state.auth.role,
   isLoading: state.loadingBar.default > 0 // индикатор загрузки
 })
 
