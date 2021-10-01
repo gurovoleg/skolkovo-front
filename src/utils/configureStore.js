@@ -14,7 +14,7 @@ const configureStore = (history) => {
     applyMiddleware(
       sagaMiddleware,
       routerMiddleware(history), // for dispatching history actions
-      logger
+      logger,
     )
   )
 

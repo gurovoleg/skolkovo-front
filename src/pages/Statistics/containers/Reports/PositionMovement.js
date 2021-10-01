@@ -7,7 +7,7 @@ import classNames from "classnames"
 import { Icon, Label } from 'semantic-ui-react'
 
 
-const RatingMovement = ({ data, workshop }) => {
+const PositionMovement = ({ data, workshop }) => {
 
   const events = Array(Number(workshop.eventsTotal)).fill('').map((e, idx) => idx + 1)
 
@@ -66,7 +66,7 @@ const RatingMovement = ({ data, workshop }) => {
                     <Fragment key={eventNo}>
 
                       {idx !== 0 &&
-                      <div style={{ position: 'relative' }} className={classNames('table-cell text_center text_sm text_medium', {
+                      <div title="Потеря/прирост позиции" style={{ position: 'relative' }} className={classNames('table-cell text_center text_sm text_medium', {
                         'table-cell_purple': diff > 0,
                         'table-cell_yellow': diff <= 0,
                         // 'table-cell_yellow': true,
@@ -79,7 +79,7 @@ const RatingMovement = ({ data, workshop }) => {
                         {prefix}{Math.abs(diff)}
                       </div>}
 
-                      <div className="table-cell text_center">{rating || '-'}</div>
+                      <div title="Позиция в рейтинге события" className="table-cell text_center">{rating || '-'}</div>
 
                     </Fragment>
                   )
@@ -99,4 +99,4 @@ const mapStateToProps = (state, props) => ({
   data: ratingMovementSelector(state, props)
 })
 
-export default withRouter(connect(mapStateToProps)(RatingMovement))
+export default withRouter(connect(mapStateToProps)(PositionMovement))

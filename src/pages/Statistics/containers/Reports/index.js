@@ -1,4 +1,5 @@
 export { default as Rating } from './Rating'
 export { default as TotalRating } from './TotalRating'
 export { default as EventRating } from './EventRating'
-export { default as RatingMovement } from './RatingMovement'
+export { default as PositionMovement } from './PositionMovement'
+export { default as GroupMovement } from './GroupMovement'

@@ -15,7 +15,8 @@ import { Switch, Route } from 'react-router-dom'
 const history = createBrowserHistory()
 const store = configureStore(history)
 
-// store.dispatch({ type: 'TEST', error: { message: 'test error' } })
+// store.dispatch({ type: 'TEST' })
+// store.dispatch(() => ({ type: 'TEST' }))
 
 ReactDOM.render(
   <Provider store={store}>
