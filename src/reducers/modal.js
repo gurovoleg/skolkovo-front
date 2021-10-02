@@ -31,7 +31,7 @@ const modalReducer = (state = initialState, action) => {
       case types.MODAL_CONFIRM:
         return { ...state, isBusy: true }
       case types.MODAL_CLOSE:
-        return { ...state, isOpen: false, isBusy: false }
+        return initialState
       default:
         return state
     }

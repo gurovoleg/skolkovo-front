@@ -10,6 +10,13 @@ const EventRating = ({ event, workshop, match, history, loadPDF }) => {
   return (
     <Fragment>
 
+      <div className="text_alignRight mar-btm_md">
+        <div className="button button_white button_shadow text_sm d-block d-sm-inline-block" onClick={() => loadPDF(event.workshopId, event.event)}>
+          <Icon name="file pdf" color="red" />
+          Скачать PDF
+        </div>
+      </div>
+
       <div className="text_center text_lg text_bold pad-btm_md">Cобытие</div>
 
       <div className="row justify-content-center mar-btm_lg">
@@ -28,17 +35,6 @@ const EventRating = ({ event, workshop, match, history, loadPDF }) => {
               history.push(`${url}/${activePage}`)
             }}
           />
-        </div>
-      </div>
-
-      <div className="text_alignRight mar-btm_md">
-        {/*<div className="button button_purple button_purple-shadow">*/}
-        {/*  <Icon name="file pdf outline" fitted className="pad-right_sm" />*/}
-        {/*  <span>Скачать PDF</span>*/}
-        {/*</div>*/}
-        <div className="button button_white button_shadow text_sm" onClick={() => loadPDF(event.workshopId, event.event)}>
-          <Icon name="file pdf" color="red" />
-          Скачать PDF
         </div>
       </div>
 

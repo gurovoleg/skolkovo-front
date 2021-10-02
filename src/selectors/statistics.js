@@ -30,21 +30,24 @@ export const ratingTotalSelector = createSelector([statisticsWorkshopSelector, u
 
   events.forEach(event => {
     event.result.forEach(user => {
-      const userData = users.find(item => item.id == user.userId)
 
       if (result[user.userId]) {
+        const value = ((result[user.userId].rating) * 100 + user.rating * 100) / 100
         result[user.userId] = {
-          rating: ((result[user.userId].rating) * 10 + user.rating * 10) / 10,
+          rating: value,
           count: result[user.userId].count + 1,
-          user: userData
+          // user: userData
         }
       } else {
         result[user.userId] = {
           rating: user.rating,
           count: 1,
-          user: userData
+          // user: userData
         }
       }
+
+      const userData = users.find(item => item.id == user.userId)
+      result[user.userId]['user'] = userData
 
     })
   })
@@ -85,4 +88,40 @@ export const ratingMovementSelector = createSelector([statisticsWorkshopSelector
   })
 
   return result
+})
+
+// данные по рейтингу группы для графиков (данные + ключи)
+export const groupRatingMovementSelector = createSelector([statisticsWorkshopSelector], (events) => {
+  const areas = [[1, 1], [1.1, 1.5], [1.6, 1.9], [2, 2], [2.1, 2.5], [2.6, 2.9], [3, 3]]
+  const labels = areas.map(area => area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`)
+  const result = [labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})]
+
+  // обходим все события
+  events.forEach(event => {
+    // объект с рейтингами пользователей, разбитыми по зонам
+    const summary = labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})
+
+    const getPercentage = (value) => Math.round(value * 100 / event.attestedUsers)
+
+    // перебираем всех пользователей внутри события, проверям в какую зону попадает их рейтинг
+    event.result.forEach(user => {
+      const area = areas.find(area => parseFloat(user.rating) <= area[1] && parseFloat(user.rating) >= area[0])
+
+      if (area) {
+        const areaName = area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`
+        // summary[areaName] = summary[areaName] ? summary[areaName] + getPercentage(1) : getPercentage(1)
+        summary[areaName] = summary[areaName]  + getPercentage(1)
+      }
+    })
+
+    // сохраняем результат события в общий массив
+    if (Object.keys(summary).length > 0) {
+      result.push(summary)
+    }
+  })
+
+    return {
+    data: result,
+    keys: labels
+  }
 })
