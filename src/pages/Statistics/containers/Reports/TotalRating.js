@@ -14,12 +14,12 @@ const columns = [
     name: 'userId',
     title: 'Имя',
     size: 'col-md-6',
-    render: user => <div>{user.name} {user.surname}</div>
+    render: item => `${item.user.name} ${item.user.surname}`
   },
   {
     name: 'rating',
     title: 'Рейтинг',
-    size: 'col-md-5'
+    size: 'col-md-5',
   }
 ]
 

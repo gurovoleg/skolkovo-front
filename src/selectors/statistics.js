@@ -9,7 +9,7 @@ export const statisticsWorkshopSelector = createSelector(statisticsSelector, idS
 })
 
 // рейтинги пользователей по одному событию
-export const ratingEventSelector = createSelector([statisticsWorkshopSelector, idSelector('eventId'), usersSelector], (workshop, id, users) => {
+export const eventSelector = createSelector([statisticsWorkshopSelector, idSelector('eventId'), usersSelector], (workshop, id, users) => {
   let event = workshop.find(events => events.event == id)
 
   if (event) {
@@ -32,17 +32,15 @@ export const ratingTotalSelector = createSelector([statisticsWorkshopSelector, u
     event.result.forEach(user => {
 
       if (result[user.userId]) {
-        const value = ((result[user.userId].rating) * 100 + user.rating * 100) / 100
+        const value = ((result[user.userId].rating) * 100 + user.rating.value * 100) / 100
         result[user.userId] = {
           rating: value,
           count: result[user.userId].count + 1,
-          // user: userData
         }
       } else {
         result[user.userId] = {
-          rating: user.rating,
+          rating: user.rating.value,
           count: 1,
-          // user: userData
         }
       }
 
@@ -57,6 +55,7 @@ export const ratingTotalSelector = createSelector([statisticsWorkshopSelector, u
 
     return {
       rating: rating(item),
+      // rating: { value: rating(item) },
       user: item.user,
       position: idx + 1
     }
@@ -66,7 +65,7 @@ export const ratingTotalSelector = createSelector([statisticsWorkshopSelector, u
 })
 
 // данные позиции рейтингов пользователей по всем событиям (динамика/изменение позиции рейтинга в течении практикума)
-export const ratingMovementSelector = createSelector([statisticsWorkshopSelector, usersSelector], (events, users) => {
+export const positionMovementSelector = createSelector([statisticsWorkshopSelector, usersSelector], (events, users) => {
   let result = {}
 
   events.forEach(eventData => {
@@ -74,11 +73,11 @@ export const ratingMovementSelector = createSelector([statisticsWorkshopSelector
       const userData = users.find(item => item.id == user.userId)
 
       if (result[user.userId]) {
-        result[user.userId].events[eventData.event] = user.ratingPosition
+        result[user.userId].events[eventData.event] = user.rating.position
       } else {
         result[user.userId] = {
           events: {
-            [eventData.event]: user.ratingPosition
+            [eventData.event]: user.rating.position
           },
           user: userData
         }
@@ -96,21 +95,27 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
   const labels = areas.map(area => area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`)
   const result = [labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})]
 
+  console.log(result)
+
   // обходим все события
   events.forEach(event => {
     // объект с рейтингами пользователей, разбитыми по зонам
     const summary = labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})
 
-    const getPercentage = (value) => Math.round(value * 100 / event.attestedUsers)
+    // Считаем процент (до 3-х знаков)
+    const getPercentage = (value) => {
+      // console.log(parseFloat((value * 100 / event.attestedUsers).toFixed(3)))
+      return value * 100 / event.attestedUsers
+    }
 
     // перебираем всех пользователей внутри события, проверям в какую зону попадает их рейтинг
     event.result.forEach(user => {
-      const area = areas.find(area => parseFloat(user.rating) <= area[1] && parseFloat(user.rating) >= area[0])
+      const area = areas.find(area => parseFloat(user.rating.value) <= area[1] && parseFloat(user.rating.value) >= area[0])
 
       if (area) {
         const areaName = area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`
         // summary[areaName] = summary[areaName] ? summary[areaName] + getPercentage(1) : getPercentage(1)
-        summary[areaName] = summary[areaName]  + getPercentage(1)
+        summary[areaName] = Number((summary[areaName] + getPercentage(1)).toFixed(3))
       }
     })
 
@@ -120,7 +125,7 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
     }
   })
 
-    return {
+  return {
     data: result,
     keys: labels
   }

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { ratingEventSelector } from 'Selectors/statistics'
+import { eventSelector } from 'Selectors/statistics'
 import { Pagination, Icon } from 'semantic-ui-react'
 import { Rating } from './index'
 import { actions } from 'Reducers/statistics'
@@ -46,7 +46,7 @@ const EventRating = ({ event, workshop, match, history, loadPDF }) => {
 }
 
 const mapStateToProps = (state, props) => ({
-  event: ratingEventSelector(state, props)
+  event: eventSelector(state, props)
 })
 
 const mapDispatchToProps = dispatch => ({

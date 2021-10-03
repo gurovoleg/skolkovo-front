@@ -23,13 +23,14 @@ const schema = Yup.object().noUnknown().shape({
       id: Yup.string().required(),
       // text: Yup.string().required(),
       answer: Yup.string().required('Не задан ответ'),
-      isRating: Yup.bool()
+      ratingRange: Yup.string()
+      // isRating: Yup.bool()
     })
   )
 })
 
 const setUserOptions = users => {
-  return users.map(user => ({ label: `${user.name} ${user.surname}`, value: user.id }))
+  return users.map(user => ({ label: `${user.name} ${user.surname}`, value: user.id, stream: user.streamId }))
 }
 
 const FormComponent = ({ appraisal, initialValues, submit }) => {
@@ -68,7 +69,10 @@ const FormComponent = ({ appraisal, initialValues, submit }) => {
                   </div>
 
                   <div className="col-md-4">
-                    <SelectControl className="mar-btm_no" name="attested" label="Участник аттестации" options={setUserOptions(users)}/>
+                    <SelectControl className="mar-btm_no" name="attested" label="Участник аттестации" options={setUserOptions(users)} onChange={(v) => {
+                       setFieldValue('attested', v.value)
+                      setFieldValue('streamId', v.stream)
+                    }}/>
                   </div>
                 </div>
               </WrapInner>

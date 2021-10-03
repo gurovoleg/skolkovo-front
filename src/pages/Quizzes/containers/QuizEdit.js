@@ -90,6 +90,7 @@ const QuizEdit = ({ initialValues, submit, history, questions }) => {
 
                     {values.questions.length === 0 && <div className="text_center text_light text_md pad-btm_sm disabled">Не задан</div>}
                     {values.questions.map((question, idx) => {
+                      // console.log('11111111111', question)
                       return (
                         <div key={idx} className="row mar-btm_md mar-top_md align-items-center">
 

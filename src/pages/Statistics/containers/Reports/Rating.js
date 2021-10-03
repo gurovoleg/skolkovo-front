@@ -2,20 +2,22 @@ import React, { Fragment } from 'react'
 
 const defaultColumns = [
   {
-    name: 'ratingPosition',
+    name: 'position',
     title: 'Место',
-    size: 'col-md-1'
+    size: 'col-md-1',
+    render: item => item.rating.position
   },
   {
     name: 'userId',
     title: 'Имя',
     size: 'col-md-6',
-    render: user => <div>{user.name} {user.surname}</div>
+    render: item => `${item.user.name} ${item.user.surname}`
   },
   {
     name: 'rating',
     title: 'Рейтинг',
-    size: 'col-md-5'
+    size: 'col-md-5',
+    render: item => item.rating.value
   }
 ]
 
@@ -40,7 +42,7 @@ const Rating = ({ data, columns }) => {
             return (
               <div key={item.user.id} className="row table-stripe-item wrap-inner_wide pad-top_sm pad-btm_sm">
                 {columns.map((column, idx) => {
-                  const value = column.render ? column.render(item.user) : item[column.name]
+                  const value = column.render ? column.render(item) : item[column.name]
                   return <div key={idx} className={column.size}>{value}</div>
                 })}
               </div>

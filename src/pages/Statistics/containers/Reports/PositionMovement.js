@@ -1,18 +1,19 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { ratingMovementSelector } from 'Selectors/statistics'
+import { positionMovementSelector } from 'Selectors/statistics'
 import { Rating } from './index'
 import classNames from "classnames"
 import { Icon, Label } from 'semantic-ui-react'
 
 
 const PositionMovement = ({ data, workshop }) => {
-
   const events = Array(Number(workshop.eventsTotal)).fill('').map((e, idx) => idx + 1)
 
   return (
     <Fragment>
+
+      <div className="text_center text_lg text_bold pad-btm_lg">Динамика движения позиции в рейтинге </div>
 
       {Object.keys(data).length === 0 && <div className="text_center disabled text_regular text_md pad-btm_sm">Нет данных</div>}
 
@@ -96,7 +97,7 @@ const PositionMovement = ({ data, workshop }) => {
 }
 
 const mapStateToProps = (state, props) => ({
-  data: ratingMovementSelector(state, props)
+  data: positionMovementSelector(state, props)
 })
 
 export default withRouter(connect(mapStateToProps)(PositionMovement))
