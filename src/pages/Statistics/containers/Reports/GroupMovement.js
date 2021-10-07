@@ -1,9 +1,8 @@
 import React from 'react'
 import { StreamChart } from 'Components/Chart'
 import { groupRatingMovementSelector } from 'Selectors/statistics'
-import { useSelector, connect } from "react-redux"
-import { useParams, withRouter } from 'react-router-dom'
-import { ResponsiveStream } from "@nivo/stream"
+import { connect } from "react-redux"
+import { withRouter } from 'react-router-dom'
 
 const chartParams = {
   legends: [
@@ -20,16 +19,13 @@ const chartParams = {
       symbolShape: 'circle',
     }
   ],
-  margin: { top: 50, right: 60, bottom: 100, left: 60 }
+  margin: { top: 50, right: 60, bottom: 120, left: 60 }
 }
 
 const GroupMovement = ({ group }) => {
-
-  console.log('121212121212', group)
-
   return (
       <StreamChart
-        curve="basis"
+        // curve="basis"
         data={group.data}
         keys={group.keys}
         title="Диаграмма движения группы"

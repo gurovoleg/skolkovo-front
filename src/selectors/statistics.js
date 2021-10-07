@@ -104,7 +104,6 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
 
     // Считаем процент (до 3-х знаков)
     const getPercentage = (value) => {
-      // console.log(parseFloat((value * 100 / event.attestedUsers).toFixed(3)))
       return value * 100 / event.attestedUsers
     }
 
@@ -114,8 +113,8 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
 
       if (area) {
         const areaName = area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`
-        // summary[areaName] = summary[areaName] ? summary[areaName] + getPercentage(1) : getPercentage(1)
         summary[areaName] = Number((summary[areaName] + getPercentage(1)).toFixed(3))
+        // summary[areaName] = summary[areaName] + getPercentage(1)
       }
     })
 

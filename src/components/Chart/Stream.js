@@ -48,7 +48,7 @@ const setInitialState = props => ({
   title: props.title || 'Диаграмма',
   curve: props.curve || 'linear',
   colorScheme: props.colorScheme || 'nivo', //red_yellow_blue
-  height: props.height || 400,
+  height: props.height || 500,
   legends: props.legends || [],
   keys: props.keys || []
 })
@@ -79,15 +79,15 @@ const Stream = (props) => {
   return (
     <div>
 
-      {/*<div className="text_alignRight mar-btm_md">*/}
-      {/*  <div className="button button_white button_shadow text_sm d-block d-sm-inline-block" onClick={buttonClickHandler}>*/}
-      {/*    <Icon name="file image" color="blue" />*/}
-      {/*    Сохранить PNG*/}
-      {/*  </div>*/}
-      {/*</div>*/}
+      <div className="text_alignRight mar-btm_md">
+        <div className="button button_white button_shadow text_sm d-block d-sm-inline-block" onClick={buttonClickHandler}>
+          <Icon name="file image" color="blue" />
+          Сохранить PNG
+        </div>
+      </div>
 
       <div ref={ref} style={{ height: `${height}px` }}>
-        {/*{title && <div className="text_bold text_lg text_center mar-btm_md">{title}</div>}*/}
+        {title && <div className="text_bold text_lg text_center mar-btm_md">{title}</div>}
 
         <ResponsiveStream
           order="reverse"
@@ -176,7 +176,7 @@ const Stream = (props) => {
           isInteractive={true} // включить возможность отобршажения подсказок
           enableStackTooltip={true} // отображение подсказки на графике
           // параметры легенды (массив с объектами)
-          // legends={legends}
+          legends={legends}
         />
       </div>
 

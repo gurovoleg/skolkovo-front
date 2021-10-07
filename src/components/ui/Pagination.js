@@ -1,12 +1,15 @@
-import React from 'react'
-import { Pagination as PaginationUI } from 'semantic-ui-react'
+import React, { useRef, useEffect, useState } from 'react'
+import { Icon, Pagination as PaginationUI } from 'semantic-ui-react'
 import { withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import { paginationEntitySelector } from 'Selectors/pagination'
 import { filterSearchString } from 'Utils/searchString'
 
-const Pagination = ({ history, location, info, entity }) => {
-  const { totalPages, currentPage, perPage } = info
+const Pagination = ({ history, location, info, entity, onChange, current, total, perPage }) => {
+  const totalPages = info.totalPages || total
+  const currentPage = info.totalPages || current
+  perPage = info.totalPages || perPage
+
   if (!totalPages || totalPages < 2) {
     return null
   }
@@ -20,12 +23,16 @@ const Pagination = ({ history, location, info, entity }) => {
   return (
     <div className="d-inline-block pad-btm_sm">
       <PaginationUI
+        // для мобильных экранов задаем минимальное колчиество элементов
+        siblingRange={document.documentElement.clientWidth < 500 ? 0 : 1}
         className="pagination-mobile"
         activePage={currentPage}
-        onPageChange={handlePageChange}
+        onPageChange={onChange || handlePageChange}
         totalPages={totalPages}
-        nextItem={null}
-        prevItem={null}
+        prevItem={{ content: <Icon name='angle left'/>, icon: true }}
+        nextItem={{ content: <Icon name='angle right'/>, icon: true }}
+        firstItem={null}
+        lastItem={null}
         pointing
         secondary
       />
