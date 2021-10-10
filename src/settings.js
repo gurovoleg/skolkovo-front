@@ -13,7 +13,8 @@ export const config = {
     autoClose: 7000,                                        // Время отображение уведомления в ms
     hideProgressBar: false,                                  // Индикатор отображения уведомления
     transition: Bounce                                       // Эффект появления
-  }
+  },
+  mobileBreakPoint: 576
 }
 
 export const roles = {

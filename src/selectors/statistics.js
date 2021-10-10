@@ -91,6 +91,7 @@ export const positionMovementSelector = createSelector([statisticsWorkshopSelect
 
 // данные по рейтингу группы для графиков (данные + ключи)
 export const groupRatingMovementSelector = createSelector([statisticsWorkshopSelector], (events) => {
+  // TODO Задавать набор зон согласно шкале рейтинга
   const areas = [[1, 1], [1.1, 1.5], [1.6, 1.9], [2, 2], [2.1, 2.5], [2.6, 2.9], [3, 3]]
   const labels = areas.map(area => area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`)
   const result = [labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})]

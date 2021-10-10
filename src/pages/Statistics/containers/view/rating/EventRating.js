@@ -1,14 +1,16 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { eventSelector } from 'Selectors/statistics'
-// import { Pagination, Icon } from 'semantic-ui-react'
 import { Icon } from 'semantic-ui-react'
 import { Rating } from './index'
 import { actions } from 'Reducers/statistics'
 import { Pagination } from "Components/ui"
 
 const EventRating = ({ event, workshop, match, history, loadPDF }) => {
+
+  console.log('66666666666666', workshop, match.params)
+
   return (
     <Fragment>
 
@@ -25,27 +27,12 @@ const EventRating = ({ event, workshop, match, history, loadPDF }) => {
         <div className="col-auto">
           <Pagination
             total={workshop.eventsTotal}
-            current={workshop.currentPage}
+            current={match.params.eventId}
             onChange={(e, { activePage }) => {
                 const url = match.url.slice(0, match.url.lastIndexOf('/'))
                 history.push(`${url}/${activePage}`)
             }}
           />
-          {/*<Pagination*/}
-          {/*  className="pagination-mobile"*/}
-          {/*  activePage={match.params.eventId}*/}
-          {/*  firstItem={null}*/}
-          {/*  lastItem={null}*/}
-          {/*  prevItem={{ content: <Icon name='angle left'/>, icon: true }}*/}
-          {/*  nextItem={{ content: <Icon name='angle right'/>, icon: true }}*/}
-          {/*  pointing*/}
-          {/*  secondary*/}
-          {/*  totalPages={workshop.eventsTotal}*/}
-          {/*  onPageChange={(e, { activePage }) => {*/}
-          {/*    const url = match.url.slice(0, match.url.lastIndexOf('/'))*/}
-          {/*    history.push(`${url}/${activePage}`)*/}
-          {/*  }}*/}
-          {/*/>*/}
         </div>
       </div>
 

@@ -27,6 +27,8 @@ const TotalRating = ({ total }) => {
   return (
     <Fragment>
 
+      <div className="text_center text_lg text_bold pad-btm_lg pad-top_md">Итоговый рейтинг участника за все события</div>
+
       {(!total || total.length === 0) && <div className="text_center disabled text_regular text_md pad-btm_sm">Нет данных</div>}
       {total && total.length > 0 && <Rating data={total} columns={columns} /> }
 

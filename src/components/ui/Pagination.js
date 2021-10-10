@@ -4,10 +4,11 @@ import { withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import { paginationEntitySelector } from 'Selectors/pagination'
 import { filterSearchString } from 'Utils/searchString'
+import { config } from 'Root/settings'
 
 const Pagination = ({ history, location, info, entity, onChange, current, total, perPage }) => {
   const totalPages = info.totalPages || total
-  const currentPage = info.totalPages || current
+  const currentPage = info.currentPage || current
   perPage = info.totalPages || perPage
 
   if (!totalPages || totalPages < 2) {
@@ -23,8 +24,10 @@ const Pagination = ({ history, location, info, entity, onChange, current, total,
   return (
     <div className="d-inline-block pad-btm_sm">
       <PaginationUI
+        // style={{ fontSize: '10px'  }}
         // для мобильных экранов задаем минимальное колчиество элементов
-        siblingRange={document.documentElement.clientWidth < 500 ? 0 : 1}
+        siblingRange={document.documentElement.clientWidth < config.mobileBreakPoint ? 0 : 1}
+        // boundaryRange={0}
         className="pagination-mobile"
         activePage={currentPage}
         onPageChange={onChange || handlePageChange}

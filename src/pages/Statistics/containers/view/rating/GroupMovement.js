@@ -15,7 +15,7 @@ const chartParams = {
       itemWidth: 70,
       itemHeight: 20,
       itemTextColor: '#999999',
-      symbolSize: 16,
+      symbolSize: 14,
       symbolShape: 'circle',
     }
   ],

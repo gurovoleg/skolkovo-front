@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect, useSelector } from 'react-redux'
-import { withRemoteData, MenuNavItem, TabNavLink } from 'Components'
-import { Wrap, DateValue, ValueWithLabel } from 'Components/ui'
-import { Redirect, Route, Switch, withRouter } from "react-router-dom"
-import { Events, Reports } from "./index"
+import { withRemoteData, MenuNavItem } from 'Components'
+import { Wrap, ValueWithLabel } from 'Components/ui'
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
+import { Events, Rating } from "./view/index"
 import { Page404 } from 'Pages'
 import { workshopSelector } from 'Selectors/workshop'
 import { statisticsWorkshopSelector } from 'Selectors/statistics'
@@ -21,10 +21,9 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
     <React.Fragment>
 
       <div className="second-menu overflow-x mar-btm_md mar-top_lg mar-btm_lg">
-        <MenuNavItem to={`${match.url}/events`} exact={true}>События</MenuNavItem>
-        <MenuNavItem to={`${match.url}/reports`} exact={true}>Отчеты</MenuNavItem>
+        <MenuNavItem to={`${match.url}/events`} exact>События</MenuNavItem>
+        <MenuNavItem to={`${match.url}/rating`} exact>Рейтинг</MenuNavItem>
       </div>
-
 
       <Wrap>
         <div className="row">
@@ -57,9 +56,9 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
       </Wrap>
 
       <Switch>
-        <Route exact path={`${match.path}/events`} render={() => <Events canUpdate={canUpdate} workshop={workshop} eventsData={eventsData} />}/>
-        <Route path={`${match.path}/reports`} render={() => <Reports workshop={workshop} eventsData={eventsData} />}/>
-        <Route exact path={match.path} render={() => <Redirect from={match.url} to={`${match.url}/events`}/>}/>
+        <Route path={`${match.path}/rating`} render={() => <Rating workshop={workshop} eventsData={eventsData} />}/>
+        <Route path={`${match.path}/events`} render={() => <Events canUpdate={canUpdate} workshop={workshop} eventsData={eventsData} />}/>
+        <Redirect from={match.url} to={`${match.url}/events`}/>
         <Route component={Page404}/>
       </Switch>
 

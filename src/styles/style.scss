@@ -91,6 +91,9 @@ img {
   padding: 0 25px;
   position: relative;
   height: 100vh;
+  @media only screen and (max-width: 576px) {
+    padding: 0 8px;
+  }
 }
 
 .header {

@@ -13,7 +13,7 @@ const PositionMovement = ({ data, workshop }) => {
   return (
     <Fragment>
 
-      <div className="text_center text_lg text_bold pad-btm_lg">Динамика движения позиции в рейтинге </div>
+      <div className="text_center text_lg text_bold pad-btm_lg pad-top_md">Динамика движения позиции участника в рейтинге</div>
 
       {Object.keys(data).length === 0 && <div className="text_center disabled text_regular text_md pad-btm_sm">Нет данных</div>}
 

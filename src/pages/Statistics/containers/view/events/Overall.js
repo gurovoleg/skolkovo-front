@@ -5,7 +5,7 @@ import { actions } from 'Reducers/statistics'
 import { withRouter, Link } from 'react-router-dom'
 import classNames from "classnames"
 
-const Events = ({ workshop, calculateEvent, eventsData, match, canUpdate }) => {
+const Overall = ({ workshop, calculateEvent, eventsData, match, canUpdate }) => {
 
   const events = Array(Number(workshop.eventsTotal)).fill('').map((e, idx) => idx + 1)
 
@@ -28,7 +28,9 @@ const Events = ({ workshop, calculateEvent, eventsData, match, canUpdate }) => {
               </div>
               <div className="row pad-left_xl">
                 <div className="col-md-6">
-                  <div className="text_md pad-btm_xs">Событие {eventName}</div>
+                  {event && <Link to={`${match.url}/${eventName}`} className="text_md pad-btm_xs">Событие {eventName}</Link>}
+                  {!event && <div className="text_md pad-btm_xs">Событие {eventName}</div>}
+                  {/*<Link to={`${match.url}/${eventName}`} className="text_md pad-btm_xs">Событие {eventName}</Link>*/}
                   <div className="text_sm pad-btm_sm">
                     {event && <span className="text_black">Аттестовано {event.attestedUsers} участников</span>}
                     {!event && <span className="text_grey">Итоги не подводились</span>}
@@ -41,8 +43,9 @@ const Events = ({ workshop, calculateEvent, eventsData, match, canUpdate }) => {
 
                   {event &&
                   <div>
-                    <Link to={`/statistics/${workshop.id}/reports/events/${eventName}`} className="button button_green button_sm text_xs">Рейтинг</Link>
-                    {canUpdate && <button className="button button_purple button_sm text_xs  mar-left_sm" onClick={() => calculateEvent(workshop.id, eventName)}>Пересчет</button>}
+                    <Link to={`/statistics/${workshop.id}/rating/event/${eventName}`} className="button button_green button_sm text_xs mar-right_xs">Рейтинг</Link>
+                    {/*<Link to={`${match.url}/${eventName}`} className="button button_green button_sm text_xs mar-top_sm mar-right_xs">Вопросы</Link>*/}
+                    {canUpdate && <button className="button button_purple button_sm text_xs mar-top_sm" onClick={() => calculateEvent(workshop.id, eventName)}>Пересчет</button>}
                   </div>}
 
                   {!event && canUpdate && <button className="button button_sm text_xs" onClick={() => calculateEvent(workshop.id, eventName)}>Подсчитать</button>}
@@ -62,4 +65,4 @@ const mapDispatchToProps = dispatch => ({
   calculateEvent: (workshopId, eventId) => dispatch(actions.create(workshopId, eventId))
 })
 
-export default withRouter(connect(null, mapDispatchToProps)(Events))
+export default withRouter(connect(null, mapDispatchToProps)(Overall))
