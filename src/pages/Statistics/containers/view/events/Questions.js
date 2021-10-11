@@ -7,9 +7,6 @@ import { Wrap } from 'Components/ui'
 
 
 const Questions = ({ event, workshop, match }) => {
-
-  console.log('111111111111', event, match, workshop)
-
   return (
     <Wrap>
 

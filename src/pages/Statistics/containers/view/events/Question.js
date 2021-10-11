@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
 import { eventSelector } from 'Selectors/statistics'
 import { Wrap } from 'Components/ui'
+import { Answers } from './question/index'
 
 const columns = [
   {
@@ -21,20 +22,28 @@ const columns = [
     name: 'questions',
     title: 'Результат',
     size: 'col-md-5',
-    render: (item, idx, match) => formatAnswers(item.questions[match.params.questionId])
+    render: (item, idx, match) => <Answers data={item.questions[match.params.questionId]}/>
   }
 ]
 
-function formatAnswers (answers) {
-  const result = Object.entries(answers).reduce((acc, [key, value]) => {
-    // if (key === 'rating') return formatAnswers(value)
-    if (key === 'rating') return value.value
-    return acc + ' ' + key + ': ' + value
-  }, '')
-  return result
-}
+// function Answers ({ data }) {
+//   if (data.rating) return data.rating.value
+//
+//   const result = formatToPercentage(data)
+//   const orderedResult = sortObjectByKey(result)
+//
+//   return Object.entries(orderedResult).map(([key, value]) => {
+//     return (
+//       <Fragment>
+//         <span className="text_light mar-right_xs">{key}:</span>
+//         <span className="mar-right_sm">{value}%</span>
+//       </Fragment>
+//     )
+//   })
+// }
 
 const Question = ({ event, match }) => {
+  console.log('111111111111', event)
 
   return (
     <Wrap>

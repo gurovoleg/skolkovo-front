@@ -1,6 +1,7 @@
 import { createSelector } from "reselect"
 import { idSelector, remoteDataSelector } from "./index"
 import { usersSelector } from "./user"
+import { formatToPercentage } from 'Utils'
 
 export const statisticsSelector = createSelector(remoteDataSelector, data => data.statistics || [])
 
@@ -94,19 +95,13 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
   // TODO Задавать набор зон согласно шкале рейтинга
   const areas = [[1, 1], [1.1, 1.5], [1.6, 1.9], [2, 2], [2.1, 2.5], [2.6, 2.9], [3, 3]]
   const labels = areas.map(area => area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`)
+  // объект с данными по каждому событию с начальным нудевым событием (точка (0,0) на графике)
   const result = [labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})]
-
-  console.log(result)
 
   // обходим все события
   events.forEach(event => {
     // объект с рейтингами пользователей, разбитыми по зонам
-    const summary = labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})
-
-    // Считаем процент (до 3-х знаков)
-    const getPercentage = (value) => {
-      return value * 100 / event.attestedUsers
-    }
+    let summary = labels.reduce((acc, e) => ({ ...acc, [e]: 0 }), {})
 
     // перебираем всех пользователей внутри события, проверям в какую зону попадает их рейтинг
     event.result.forEach(user => {
@@ -114,13 +109,14 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
 
       if (area) {
         const areaName = area[0] === area[1] ? area[0].toString() : `${area[0]}-${area[1]}`
-        summary[areaName] = Number((summary[areaName] + getPercentage(1)).toFixed(3))
-        // summary[areaName] = summary[areaName] + getPercentage(1)
+        summary[areaName] += 1
       }
     })
 
     // сохраняем результат события в общий массив
     if (Object.keys(summary).length > 0) {
+      // получаем эквивалентные процентные величины (округление до целого числа)
+      summary = formatToPercentage(summary)
       result.push(summary)
     }
   })
