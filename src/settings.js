@@ -14,7 +14,7 @@ export const config = {
     hideProgressBar: false,                                  // Индикатор отображения уведомления
     transition: Bounce                                       // Эффект появления
   },
-  mobileBreakPoint: 576
+  mobileBreakPoint: 576 // точка перелома для мобильных экранов (используется для доработки интерфейса)
 }
 
 export const roles = {

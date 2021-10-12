@@ -1,7 +1,7 @@
 import { createSelector } from "reselect"
 import { idSelector, remoteDataSelector } from "./index"
 import { usersSelector } from "./user"
-import { formatToPercentage } from 'Utils'
+import { formatToPercentage, sortObjectByKey } from 'Utils'
 
 export const statisticsSelector = createSelector(remoteDataSelector, data => data.statistics || [])
 
@@ -9,13 +9,21 @@ export const statisticsWorkshopSelector = createSelector(statisticsSelector, idS
   return statistics.filter(e => e.workshopId === id)
 })
 
-// рейтинги пользователей по одному событию
+// данные пользователей по одному событию (+ пподсчет ответов в процентном соотношение)
 export const eventSelector = createSelector([statisticsWorkshopSelector, idSelector('eventId'), usersSelector], (workshop, id, users) => {
   let event = workshop.find(events => events.event == id)
 
   if (event) {
     const result = event.result.map(user => {
       const userData = users.find(item => item.id == user.userId)
+
+      // обработка вопросов - пересчитываем значения в процентном соотношение
+      Object.entries(user.questions).forEach(([key, value]) => {
+        if (!value.rating) {
+          user.questions[key] = sortObjectByKey(formatToPercentage(value))
+        }
+      })
+
       return { ...user, user: userData }
     })
 
@@ -126,3 +134,26 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
     keys: labels
   }
 })
+
+// анализ ответов вопроса согласно критерию (по умолчанию должно быть более 50% ответов)
+export const eventQuestionSelector = (threshold = 50, notDefinedLabel = 'Не определено') => {
+  return createSelector([eventSelector, idSelector('questionId')], (event, questionId) => {
+    let result = {}
+
+    // обходим всех пользователей и ищем ответы более заданного критерия
+    event.result.forEach(user => {
+      const answers = user.questions[questionId]
+      let notDefined = true // индикатор для ответа "не удалось определить"
+      Object.keys(answers).forEach(key => {
+        if (answers[key] > threshold) {
+          result[key] = result[key] ? result[key] + 1 : 1
+          notDefined = false
+        }
+      })
+      if (notDefined) result[notDefinedLabel] = result[notDefinedLabel] ? result[notDefinedLabel] + 1 : 1
+      notDefined = true
+    })
+
+    return formatToPercentage(result)
+  })
+}

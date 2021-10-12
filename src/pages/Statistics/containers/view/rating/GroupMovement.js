@@ -7,10 +7,10 @@ import { withRouter } from 'react-router-dom'
 const chartParams = {
   legends: [
     {
-      anchor: 'top', //bottom-right
+      anchor: 'bottom', //bottom-right
       direction: 'row', //column
       // translateX: 110, // сдвиг блока по Х
-      translateY: -50, // сдвиг блока по Y
+      translateY: 100, // сдвиг блока по Y
       itemDirection: 'left-to-right',
       itemWidth: 70,
       itemHeight: 20,
