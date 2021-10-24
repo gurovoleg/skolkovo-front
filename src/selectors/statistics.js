@@ -9,7 +9,7 @@ export const statisticsWorkshopSelector = createSelector(statisticsSelector, idS
   return statistics.filter(e => e.workshopId === id)
 })
 
-// данные пользователей по одному событию (+ пподсчет ответов в процентном соотношение)
+// данные пользователей по одному событию (+ подсчет ответов в процентном соотношение)
 export const eventSelector = createSelector([statisticsWorkshopSelector, idSelector('eventId'), usersSelector], (workshop, id, users) => {
   let event = workshop.find(events => events.event == id)
 
@@ -135,25 +135,50 @@ export const groupRatingMovementSelector = createSelector([statisticsWorkshopSel
   }
 })
 
-// анализ ответов вопроса согласно критерию (по умолчанию должно быть более 50% ответов)
-export const eventQuestionSelector = (threshold = 50, notDefinedLabel = 'Не определено') => {
-  return createSelector([eventSelector, idSelector('questionId')], (event, questionId) => {
-    let result = {}
+// анализ всех вопросов по одному событиям
+export const eventQuestionSelector = createSelector([eventSelector, idSelector('questionId')], (event, questionId) => {
+  return calculateQuestionInEvent(event, questionId)
+})
 
-    // обходим всех пользователей и ищем ответы более заданного критерия
-    event.result.forEach(user => {
-      const answers = user.questions[questionId]
-      let notDefined = true // индикатор для ответа "не удалось определить"
-      Object.keys(answers).forEach(key => {
-        if (answers[key] > threshold) {
-          result[key] = result[key] ? result[key] + 1 : 1
-          notDefined = false
-        }
-      })
-      if (notDefined) result[notDefinedLabel] = result[notDefinedLabel] ? result[notDefinedLabel] + 1 : 1
-      notDefined = true
+// анализ ответов одного вопроса всех пользователей за событие
+// подсчитываем количество вхождений того или иного ответа согласно критерию (по умолчанию должно быть более 50% ответов)
+function calculateQuestionInEvent(event, questionId, threshold = 0.5, notDefinedLabel = 'Не определено') {
+  let result = {}
+
+  // обходим всех пользователей и ищем ответы более заданного критерия
+  event.result.forEach(user => {
+    const answers = user.questions[questionId]
+    // определяем пороговое значение как сумму всех значений умноженное на критерий
+    const limit = Object.values(answers).reduce((acc, value) => acc + value, 0) * threshold
+    let notDefined = true // индикатор для ответа "не удалось определить"
+    Object.keys(answers).forEach(key => {
+      if (answers[key] > limit) {
+        result[key] = result[key] ? result[key] + 1 : 1
+        notDefined = false
+      }
     })
-
-    return formatToPercentage(result)
+    // Если ни один из ответов не перешел порогового значения (критерия), то считаем, что в этом случае не удалось определить
+    if (notDefined) result[notDefinedLabel] = result[notDefinedLabel] ? result[notDefinedLabel] + 1 : 1
+    notDefined = true
   })
+
+  return sortObjectByKey(formatToPercentage(result))
 }
+
+// анализ всех вопросов по всем событиям
+export const workshopQuestionsSelector = createSelector(statisticsWorkshopSelector, (events) => {
+  // получаем список всех вопросов за все события
+  const questions = {}
+  events.forEach(event => event.questions.forEach(q => questions[q.id] = q))
+
+  // обходим все события и для каждого события делаем анализ ответов по всем вопросам
+  events.forEach(event => {
+    Object.values(questions).forEach(question => {
+      const result = calculateQuestionInEvent(event, question.id)
+      if (!question.events) question.events = {}
+      question.events[event.id] = result
+    })
+  })
+
+  return questions
+})

@@ -3,15 +3,15 @@ import { connect, useSelector } from 'react-redux'
 import { withRemoteData, MenuNavItem } from 'Components'
 import { Wrap, ValueWithLabel } from 'Components/ui'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
-import { Events, Rating } from "./view/index"
+import { Events, Rating, Questions } from "./view/index"
 import { Page404 } from 'Pages'
 import { workshopSelector } from 'Selectors/workshop'
-import { statisticsWorkshopSelector } from 'Selectors/statistics'
+import { statisticsWorkshopSelector, workshopQuestionsSelector } from 'Selectors/statistics'
 import { actions } from 'Reducers/statistics'
 import { profileSelector } from "Selectors/user"
 import { roles } from 'Root/settings'
 
-const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
+const View = ({ match, workshop, eventsData, workShopQuestionsData, calculateAllEvents }) => {
   const progress = Math.floor(eventsData.length * 100 / workshop.eventsTotal)
 
   const profile = useSelector(profileSelector)
@@ -23,6 +23,7 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
       <div className="second-menu overflow-x mar-btm_md mar-top_lg mar-btm_lg">
         <MenuNavItem to={`${match.url}/events`} exact>События</MenuNavItem>
         <MenuNavItem to={`${match.url}/rating`} exact>Рейтинг</MenuNavItem>
+        <MenuNavItem to={`${match.url}/questions`} exact>Вопросы</MenuNavItem>
       </div>
 
       <Wrap>
@@ -58,6 +59,7 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
       <Switch>
         <Route path={`${match.path}/rating`} render={() => <Rating workshop={workshop} eventsData={eventsData} />}/>
         <Route path={`${match.path}/events`} render={() => <Events canUpdate={canUpdate} workshop={workshop} eventsData={eventsData} />}/>
+        <Route path={`${match.path}/questions`} render={({ match }) => <Questions data={workShopQuestionsData} match={match} />}/>
         <Redirect from={match.url} to={`${match.url}/events`}/>
         <Route component={Page404}/>
       </Switch>
@@ -68,7 +70,8 @@ const View = ({ match, workshop, eventsData, calculateAllEvents }) => {
 
 const mapStateToProps = (state, props) => ({
   workshop: workshopSelector(state, props),
-  eventsData: statisticsWorkshopSelector(state, props)
+  eventsData: statisticsWorkshopSelector(state, props),
+  workShopQuestionsData: workshopQuestionsSelector(state, props)
 })
 
 const mapDispatchToProps = dispatch => ({

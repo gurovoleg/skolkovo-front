@@ -8,25 +8,23 @@ export const  sortObjectByKey = (obj) => Object.keys(obj).sort().reduce((acc, ke
 // приведение занчений объекта/массива к процентному эквиваленту
 export function formatToPercentage (data) {
   const result = {}
-  let indexes = []
-  let lastChangedKey = null // ключ последнего округленного числа с дробной частью 0.5
-  let toFloor = false // индикатор округления в меньшую сторону
+  let lastChangedKey = null
 
   const total = Object.values(data).reduce((acc, value) => acc + Number(value), 0)
   // console.log('TOTAL', total, data)
   Object.entries(data).forEach(([key, value]) => {
-    let newValue = (value * 100 / total).toFixed(1)
-    const [int, dec] = newValue.split('.')
-    // отдельно обрабатываем пограничное значение. Половину значений округляем вверх, другую половину вниз.
-    // в случае нечетного количества после дополнительно обрабатываем последнее округленное значение
-    if (dec === '5') {
-      indexes.push({ [key]: newValue })
-      lastChangedKey = key
-      newValue = toFloor ? Math.floor(newValue) : Math.ceil(newValue)
-      toFloor = !toFloor
-    } else {
-      newValue = Math.round(newValue)
-    }
+    let newValue = Math.round(value * 100 / total)
+    // const [int, dec] = newValue.split('.')
+    // // отдельно обрабатываем пограничное значение. Половину значений округляем вверх, другую половину вниз.
+    // // в случае нечетного количества после дополнительно обрабатываем последнее округленное значение
+    // if (dec === '5') {
+    //   indexes.push({ [key]: newValue })
+    //   newValue = toFloor ? Math.floor(newValue) : Math.ceil(newValue)
+    //   toFloor = !toFloor
+    // } else {
+    //   newValue = Math.round(newValue)
+    // }
+    lastChangedKey = key
     result[key] = newValue
   })
 
@@ -35,6 +33,8 @@ export function formatToPercentage (data) {
   // проверка нужна ли корректировка для последнего значения (в случае, когда было нечетное количество значений с дробной частью 0.5)
   if (totalPercentage > 100) {
     result[lastChangedKey] = result[lastChangedKey] - totalPercentage % 100
+  } else if (totalPercentage < 100) {
+    result[lastChangedKey] = result[lastChangedKey] + 100 - totalPercentage
   }
 
   // console.log('result', result)
