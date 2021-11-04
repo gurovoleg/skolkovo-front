@@ -7,10 +7,10 @@ export const config = {
   apiUrl: window.backendUrl || 'https://webdev-go.ru/api',
   // toasts (notifications)
   toast: {
-    // bodyClassName: 'text_alignCenter',                       // Стилизация содержимого контейнера
+    // bodyClassName: 'text_alignCenter',                    // Стилизация содержимого контейнера
     limit: 3,                                                // Количество одновременно выводимых уведомлений
     position: 'bottom-right',                                // Расположение уведомления
-    autoClose: 7000,                                        // Время отображение уведомления в ms
+    autoClose: 7000,                                         // Время отображение уведомления в ms
     hideProgressBar: false,                                  // Индикатор отображения уведомления
     transition: Bounce                                       // Эффект появления
   },
